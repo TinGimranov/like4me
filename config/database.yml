@@ -15,7 +15,7 @@ development:
   database: like4me_development
   pool: 5
   username: root
-  password:
+  password: koi8rus
   socket: /var/run/mysqld/mysqld.sock
 
 # Warning: The database defined as "test" will be erased and
@@ -28,7 +28,7 @@ test:
   database: like4me_test
   pool: 5
   username: root
-  password:
+  password: koi8rus
   socket: /var/run/mysqld/mysqld.sock
 
 production:
@@ -38,5 +38,5 @@ production:
   database: like4me_production
   pool: 5
   username: root
-  password:
+  password: koi8rus
   socket: /var/run/mysqld/mysqld.sock

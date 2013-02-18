@@ -1,4 +1,10 @@
 Like4me::Application.routes.draw do
+  #devise_for :users
+  devise_for :user, :path => '/admin', :path_names => { :sign_in => "login", :sign_out => "logout" }
+  resources :admin, :only  => [:index]
+  get 'admin/settings' => 'admin#settings'
+  post 'admin/settings' => 'admin#settings'
+  get 'admin/pagetypes' => 'admin#pagetypes'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -48,7 +54,7 @@ Like4me::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'main#index'
 
   # See how all your routes lay out with "rake routes"
 
