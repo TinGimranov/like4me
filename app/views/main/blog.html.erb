@@ -1,0 +1,9 @@
+<h1>Блог</h1>
+<% @posts.each do |post| %>
+    <a href="/blog/<%= post.id%>"><h4><%= post.title  %></h4></a>
+    <p class="muted"><%= Russian::strftime(post.updated_at, "%d %B %Y г. %H:%M") %></p>
+    <%= post.intro.html_safe %>
+    <br><br>
+    <a href="/blog/<%= post.id%>"><button class="btn btn-primary">Подробнее</button></a>
+    <hr style="margin:  20px 0">
+<% end %>

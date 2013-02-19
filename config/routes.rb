@@ -1,10 +1,22 @@
 Like4me::Application.routes.draw do
+
+  mount Ckeditor::Engine => '/ckeditor'
+
   #devise_for :users
   devise_for :user, :path => '/admin', :path_names => { :sign_in => "login", :sign_out => "logout" }
   resources :admin, :only  => [:index]
   get 'admin/settings' => 'admin#settings'
   post 'admin/settings' => 'admin#settings'
-  get 'admin/pagetypes' => 'admin#pagetypes'
+  delete 'admin/settings' => 'admin#settings'
+  put 'admin/settings' => 'admin#settings'
+
+
+  scope "admin" do
+    resources :textpages, :except => :show
+    resources :questions, :except => :show
+    resources :posts, :except => :show
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -55,6 +67,10 @@ Like4me::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   root :to => 'main#index'
+  match 'faq' => 'main#faq'
+  match 'blog' => 'main#blog'
+  match 'blog/:id' => 'main#blog_details'
+  get ':slug' => 'main#textpage'
 
   # See how all your routes lay out with "rake routes"
 

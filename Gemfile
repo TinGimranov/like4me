@@ -27,6 +27,14 @@ gem 'execjs'
 
 gem 'devise'
 
+#gem 'tinymce-rails'
+#gem 'tinymce-rails-imageupload', '~> 3.5.6.3'
+
+gem "ckeditor"
+gem "paperclip"
+
+gem "russian"
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

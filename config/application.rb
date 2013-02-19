@@ -62,5 +62,8 @@ module Like4me
     config.to_prepare do
         Devise::SessionsController.layout "empty"      
     end
+
+    config.autoload_paths += %W(#{config.root}/app/models/ckeditor)
+
   end
 end

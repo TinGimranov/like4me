@@ -1,0 +1,19 @@
+<h1>Вопрос - ответ</h1>
+<div class="accordion" id="accordion2">
+  <% i = 1 %>
+  <% @questions.each do |item| %>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse<%= i %>">
+        <%= item.question %>
+      </a>
+    </div>
+    <div id="collapse<%= i %>" class="accordion-body collapse <%= (i == 1) ? 'in' : '' %>">
+      <div class="accordion-inner">
+        <%= item.answer.html_safe %>
+      </div>
+    </div>
+  </div>
+  <% i+=1 %>
+  <% end %>
+</div>
