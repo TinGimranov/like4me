@@ -1,0 +1,28 @@
+<h4>Список текстовых страниц</h4>
+
+<table class="table table-striped"> 
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>URL</th>
+    <th>Скрыта</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+<% @textpages.each do |textpage| %>
+  <tr>
+    <td><%= textpage.title %></td>
+    <td><%= textpage.slug %></td>
+    <td><%= textpage.hidden %></td>
+    <td><%= link_to image_tag('/im/edit.png'), edit_textpage_path(textpage) %></td>
+    <td><%= link_to image_tag('/im/delete.png'), textpage, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+<br />
+
+<%= link_to 'Новая страница', new_textpage_path %>

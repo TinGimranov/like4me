@@ -1,0 +1,27 @@
+<h4>Список вопросов</h4>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Вопрос</th>
+    <th>Скрыт</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+<% @questions.each do |question| %>
+  <tr>
+    <td><%= question.question %></td>
+    <td><%= question.status %></td>
+    <td><%= link_to image_tag('/im/edit.png'), edit_question_path(question) %></td>
+    <td><%= link_to image_tag('/im/delete.png'), question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+<br />
+
+<%= link_to 'Новый вопрос', new_question_path %>

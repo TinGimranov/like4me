@@ -1,0 +1,55 @@
+<h4>Добавить новую константу</h4>
+	<%= form_for(@settings, :method => 'post', :url => '',  :html => { :class => "form-horizontal" }) do |f| %>
+	<div class="form-actions">
+		<div class="control-group">
+	  		<div class="controls">
+				<!--<p class="text-error">Donec ullamcorper nulla non metus auctor fringilla.</p>
+				<p class="text-error">Donec ullamcorper nulla non metus auctor fringilla.</p>
+				<p class="text-error">Donec ullamcorper nulla non metus auctor fringilla.</p> -->
+				<% @settings.errors.full_messages.each do |msg| %>
+				    <p class="text-error"><%= msg %></p>
+				<% end %>
+			</div>
+		</div>
+		<div class="control-group">
+	    <label class="control-label" for="param_name">Параметр</label>
+	    <div class="controls">
+	      	<%= f.text_field :name, :autofocus => true %>
+	    </div>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="inputEmail">Значение</label>
+	    <div class="controls">
+	      <%= f.text_field :value %>
+	    </div>
+	  </div>
+	  <div class="control-group">
+	  	<div class="controls">
+	  	<%= f.submit "Сохранить", :class => "btn btn-primary" %>
+	  </div>
+	  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  	<tr>
+  		<th>Название</th>
+  		<th>Значение</th>
+  		<th></th>
+  	</tr>
+  </thead>
+  <tbody>
+  		<% @_settings.each do |param| %>
+  		<tr>
+  			<td><%= param.name %></td>
+  			<td><%= param.value %></td>
+  			<td>
+  				<%= link_to image_tag('/im/delete.png'), {:controller => "admin", :action => "settings", :param_name => param.name} , :method => :delete, :confirm => 'Вы уверены в удалении?' %>
+  				<%= link_to image_tag('/im/edit.png'), {:controller => "admin", :action => "settings", :param_name => param.name} , :method => :put %>
+  			</td>
+  		</tr>
+  		<% end %>
+  </tbody>
+</table>
+
+<% end %>

@@ -1,0 +1,43 @@
+<%= form_for(@post, :html => { :class => "form-horizontal" }) do |f| %>
+<div class="form-actions">
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <label class="control-label" for="param_name">Название</label>
+    <div class="controls">
+      <%= f.text_field :title %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="param_name">Аннотация</label>
+    <div class="controls">
+        <%= f.cktext_area :intro %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="param_name">Содержание</label>
+    <div class="controls">
+        <%= f.cktext_area :content %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="param_name">Скрыт</label>
+    <div class="controls">
+      <%= f.select(:status, options_for_select([['Да', 1], ['Нет', 0]])) %>
+    </div>
+  </div>
+  <div class="actions">
+    <%= f.submit "Сохранить", :class => "btn btn-primary" %>
+  </div>
+</div>
+<% end %>

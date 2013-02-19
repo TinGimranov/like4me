@@ -1,0 +1,26 @@
+<h4>Список постов</h4>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Название</th>
+    <th>Скрыт</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+<% @posts.each do |post| %>
+  <tr>
+    <td><%= post.title %></td>
+    <td><%= post.status %></td>
+    <td><%= link_to image_tag('/im/edit.png'), edit_post_path(post) %></td>
+    <td><%= link_to image_tag('/im/delete.png'), post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+<br />
+
+<%= link_to 'Новый пост', new_post_path %>

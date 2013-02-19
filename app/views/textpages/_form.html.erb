@@ -1,0 +1,42 @@
+<%= form_for(@textpage, :html => { :class => "form-horizontal" }) do |f| %>
+<div class="form-actions">
+  <% if @textpage.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@textpage.errors.count, "error") %> prohibited this textpage from being saved:</h2>
+      <ul>
+      <% @textpage.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <label class="control-label" for="param_name">Тайтл страницы</label>
+    <div class="controls">
+      <%= f.text_field :title %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="param_name">Контент страницы</label>
+    <div class="controls">
+      <%= f.cktext_area :content %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="param_name">URL</label>
+    <div class="controls">
+      <%= f.text_field :slug %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="param_name">Скртыая страница</label>
+    <div class="controls">
+      <%= f.select(:hidden, options_for_select([['Да', 1], ['Нет', 0]])) %>
+    </div>
+  </div>
+  <div class="actions">
+    <%= f.submit "Сохранить", :class => "btn btn-primary" %>
+  </div>
+</div>
+<% end %>
