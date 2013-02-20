@@ -1,0 +1,8 @@
+ru:
+  activerecord:
+    models:
+      feedback: "Обратная связь"
+    attributes:
+      feedback:
+        email: Email
+        question: Сообщение

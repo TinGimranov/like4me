@@ -1,0 +1,54 @@
+<table>
+	<tr>
+		<td>
+<h1>Написать нам</h1>
+<%= form_for(@feedback, :method => 'post', :url => '', :html => { :class => "form-horizontal" }) do |f| %>
+  <% if @feedback.errors.any? %>
+      <% @feedback.errors.full_messages.each do |msg| %>
+        <p class="text-error" style="margin-left: 15px"><%= msg %></p>
+      <% end %>
+  <% end %>
+  <%  if @a == 1 %>
+  	<p class="text-success">Ваше сообщение успешно отправено</p>
+  <% end %>
+  <div class="control-group">
+    <div class="controls" style="margin-left: 0px">
+      <label>Ваш E-mail</label>
+      <%= f.text_field :email, :style => "width: 400px" %>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls" style="margin-left: 0px">
+    	<label>Сообщение</label>
+        <%= f.text_area :question, :style => "width: 400px; height: 256px" %>
+    </div>
+  </div>
+  <div class="actions">
+    <%= f.submit "Отправить", :class => "btn btn-primary" %>
+  </div>
+<% end %>
+		</td>
+		<td style="vertical-align: top; padding-left: 20px">
+			<h1>Рассказать друзьям</h1>
+			<!-- AddThis Button BEGIN -->
+			<div class="addthis_toolbox addthis_default_style addthis_32x32_style" style="margin-top: 32px;margin-bottom: 46px;">
+					<a class="addthis_button_preferred_1"></a>
+					<a class="addthis_button_preferred_2"></a>
+					<a class="addthis_button_preferred_3"></a>
+					<a class="addthis_button_preferred_4"></a>
+					<a class="addthis_button_compact"></a>
+					<a class="addthis_counter addthis_bubble_style"></a>
+			</div>
+			<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+			<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5113f63d3defd893"></script>
+			<!-- AddThis Button END -->
+			<script type="text/javascript" src="//vk.com/js/api/openapi.js?79"></script>
+			<!-- VK Widget -->
+			<div id="vk_groups"></div>
+			<script type="text/javascript">
+			VK.Widgets.Group("vk_groups", {mode: 0, width: "414", height: "265"}, 20003922);
+			</script>
+		</td>
+	</tr>
+
+</table>

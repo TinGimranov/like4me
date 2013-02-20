@@ -34,4 +34,17 @@ class MainController < ApplicationController
     @meta_title = @post.title+" — Блог"
   end
 
+  def feedback
+
+    @feedback = Feedback.new(params[:feedback])
+    @a = 0;
+    if request.post?
+      if @feedback.save
+        @a = 1
+      end
+    end
+    @meta_title = 'Написать нам'
+
+  end
+
 end
