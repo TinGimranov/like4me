@@ -15,6 +15,7 @@ Like4me::Application.routes.draw do
     resources :textpages, :except => :show
     resources :questions, :except => :show
     resources :posts, :except => :show
+    resources :feedback, :except => [:create, :new, :edit, :update]
   end
 
   # The priority is based upon order of creation:

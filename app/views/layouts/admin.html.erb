@@ -44,6 +44,7 @@
               <li class="<%= is_current('textpages', 'index', nil) %>"><%= link_to 'Текстовые страницы', '/admin/textpages' %></li>
               <li class="<%= is_current('questions', 'index', nil) %>"><%= link_to 'FAQ', '/admin/questions' %></li>
               <li class="<%= is_current('posts', 'index', nil) %>"><%= link_to 'Блог', '/admin/posts' %></li>
+              <li class="<%= is_current('feedback', 'index', nil) %>"><%= link_to 'Обратная связь (' + get_count_unread_message.to_s+')', '/admin/feedback' %></span></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -65,6 +66,10 @@
               <li class="nav-header">БЛОГ</li>
               <% get_last_posts_admin.each do |item| %>
                 <li class="<%= is_current('posts', 'edit', item.id) %>"><%= link_to item.title, '/admin/posts/'+item.id.to_s+'/edit' %></li>  
+              <% end %>
+              <li class="nav-header">Обратная связь</li>
+              <% get_last_messages.each do |item| %>
+                <li class="<%= is_current('feedback', 'show', item.id) %>"><%= link_to item.email, '/admin/feedback/'+item.id.to_s %></li>  
               <% end %>
             </ul>
           </div><!--/.well -->
