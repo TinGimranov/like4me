@@ -1,4 +1,10 @@
 <!-- Jumbotron -->
+<% if current_user %>
+  Welcome <%= current_user.name %>!
+  <%= link_to "Sign Out", signout_path %>
+<% else %>
+  <%= link_to "Sign in with Twitter", "/auth/vkontakte" %>
+<% end %>
 <div class="jumbotron">
   <h1>Marketing stuff!</h1>
   <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>

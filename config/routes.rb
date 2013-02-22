@@ -73,6 +73,8 @@ Like4me::Application.routes.draw do
   match 'blog/:id' => 'main#blog_details'
   get 'feedback' => 'main#feedback'
   post 'feedback' => 'main#feedback'
+  match "/auth/:provider/callback" => "site_sessions#create"
+  match "/signout" => "site_sessions#destroy", :as => :signout
   get ':slug' => 'main#textpage'
 
   # See how all your routes lay out with "rake routes"
