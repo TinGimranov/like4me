@@ -1,0 +1,105 @@
+<%= render 'top' %>
+<script type="text/javascript">
+	var modal_show = 0;
+</script>
+<form class="form-horizontal" style="margin-top: 135px; margin-left: 63px;" method="POST">
+  <div class="control-group">
+    <label style="float: left">Название</label>
+    <div class="controls" style="margin-left: 180px">
+      <input type="text" placeholder="Моё новое фото">
+    </div>
+  </div>
+  <div class="control-group">
+    <label style="float: left">Сслыка</label>
+    <div class="controls" style="margin-left: 180px">
+      <input type="text" placeholder="http://vk.com/feed?w=wall96657332_11823480">
+    </div>
+  </div>
+  <div class="control-group">
+    <label style="float: left">Сколько ♥ потратить</label>
+    <div class="controls" style="margin-left: 180px">
+      <input type="text" placeholder="<%= current_user.balance %>" id="">
+    </div>
+  </div>
+  <div class="control-group">
+    <label style="float: left">Пол</label>
+    <div class="controls" style="margin-left: 180px" id="sex">
+      <select>
+      		<option value='0'>Не важно</option>
+      		<option value='1'>Только мужчины</option>
+      		<option value='2'>Только женщины</option>
+      </select>
+    </div>
+  </div>
+    <div class="control-group">
+    <label style="float: left">Возраст от</label>
+    <div class="controls" style="margin-left: 180px" id="gender_min">
+      <select>
+      		<option value='0'>Не важно</option>
+      		<option value='14'>14 лет</option>
+      		<option value='16'>16 лет</option>
+      		<option value='18'>18 лет</option>
+      		<option value='20'>20 лет</option>
+      		<option value='22'>22 лет</option>
+      		<option value='24'>24 лет</option>
+      		<option value='26'>26 лет</option>
+      		<option value='28'>28 лет</option>
+      		<option value='30'>30 лет</option>
+      </select>
+    </div>
+  </div>
+  <div class="control-group">
+    <label style="float: left">Возраст до</label>
+    <div class="controls" style="margin-left: 180px" id="gender_max">
+      <select>
+      		<option value='0'>Не важно</option>
+      		<option value='16'>16 лет</option>
+      		<option value='18'>18 лет</option>
+      		<option value='20'>20 лет</option>
+      		<option value='22'>22 лет</option>
+      		<option value='24'>24 лет</option>
+      		<option value='26'>26 лет</option>
+      		<option value='28'>28 лет</option>
+      		<option value='30'>30 лет</option>
+      </select>
+    </div>
+  </div>
+    <div class="control-group">
+    <label style="float: left">Сколько лайков добавится на вашу страницу в ВК:<h2 class="user-balance-number" style="float: none; margin: 0 0 0 0"><%= current_user.balance %> ♥</h2></label>
+    <div class="controls" style="margin-left: 180px">
+
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls" style="margin-left: 180px">
+      <button type="submit" class="btn btn-block" style="width: 60%">Заказать</button>
+    </div>
+  </div>
+</form>
+
+<div class="modal hide fade" id="myModal">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Информация</h3>
+  </div>
+  <div class="modal-body">
+    <p id="modal_content"></p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+  </div>
+</div>
+
+<script type="text/javascript">
+$("select").change(function(){
+	if(modal_show == 0) {
+		$("#modal_content").empty().html("За дополнительные опции взимается 1 лайк за каждое сердечко на вашу страницу");
+		$("#myModal").modal("show");
+		modal_show = 1;
+	}
+	if("")
+	if($("#sex").val())
+})
+</script>
+
+<%= render 'footer' %>

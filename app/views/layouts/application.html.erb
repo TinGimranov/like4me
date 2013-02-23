@@ -76,6 +76,10 @@
           border-right: 0;
           border-radius: 0 3px 3px 0;
       }
+      .loggin_vk {
+        float: right;
+        padding-top: 5px;
+      }
   </style>
 </head>
 <body>
@@ -83,12 +87,24 @@
 <div class="container">
 
   <div class="masthead">
+    <div class="loggin_vk">
+      <% if current_user %>
+        <span>Здравствуйте, </span><%= link_to current_user.name, '/cabinet' %> | <%= link_to "Выход", signout_path %>
+      <% else %>
+        <span><strong>Войти с помощью </strong></span>
+        <a href="/auth/vkontakte" target=_blank><img src="/im/vkontakte.png"></a>
+      <% end %>
+    </div>
     <a href="/" style="text-decoration: none"><h3 class="muted"><%= get_settings_value('app_name') %></h3></a>
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
           <ul class="nav">
-            <li class="<%= is_current('main', 'index', nil)%>"><a href="/">Главная</a></li>
+            <% if current_user %>
+              <li class="<%= is_current('cabinet', 'index', nil)%>"><a href="/cabinet">Кабинет</a></li>
+            <% else %>
+              <li class="<%= is_current('main', 'index', nil)%>"><a href="/">Главная</a></li>
+            <% end %>            
             <% get_available_text_page.each do |item| %>
                 <li class="<%= is_current_textpage('main', 'textpage', item.slug)%>"><a href="/<%= item.slug %>"><%= item.title %></a></li>
             <% end %>
@@ -116,7 +132,7 @@
     <div class="span4">
       <h2><%= item.title %></h2>
       <p><%= item.intro.html_safe %></p>
-      <p><a class="btn" href="/blog/<%= item.id %>">Подробнее &raquo;</a></p>
+      <p><a class="btn btn-primary" href="/blog/<%= item.id %>">Подробнее &raquo;</a></p>
     </div>
     <% end %>
   </div>

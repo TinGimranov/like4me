@@ -5,7 +5,12 @@ class MainController < ApplicationController
   layout 'application'
 
   def index
-      @meta_title = 'Главная'
+      if current_user
+        @meta_title = 'Личный кабинет'
+        redirect_to '/cabinet'
+      else
+        @meta_title = 'Главная'
+      end
   end
 
   def textpage

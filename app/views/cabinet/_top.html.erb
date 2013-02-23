@@ -1,0 +1,90 @@
+<style type="text/css">
+	.user_stat {
+		border: 1px solid #1e76a2;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+		height: 200px;
+	}
+
+	.name {
+		margin: 10px 10px 10px 10px;
+		float: left;
+	}
+	.logout-button {
+		float: right;
+		margin: 10px 10px 10px 10px;
+	}
+	.user-balance {
+		margin: 10px 10px -10px 10px;
+		float: left;
+	}
+	.user-balance-number {
+		margin: 10px 10px 10px 10px;
+		float: right;
+		color: #1e76a2;
+	}
+
+	.help-balance-link {
+		float:left; 
+		margin-left: 10px; 
+		margin-bottom: 0px;
+		font-size: 12px;
+	}
+
+	.help-nonpay-balance-link {
+		float: left; 
+		margin-left: 10px; 
+		margin-top: 20px; 
+		font-site: 14px;
+	}
+
+	.btn-buy {
+		float: left;
+		margin: 10px 10px 10px 10px;
+		width: 93%;
+	}
+	.top-menu-cabinet {
+		list-style: none;
+	}
+
+	.top-menu-cabinet li {
+		float: left;
+		margin-right: 10px;
+		text-align: center;
+		width: 30%;
+	}
+</style>
+<div class="row-fluid">
+  <div class="span4">
+  	<div class="user_stat">
+  			<h4 class="name"><%= current_user.name%></h4>
+  			<%= link_to "Выход", signout_path, :class => "logout-button" %>	
+  			<h3 class="user-balance">Ваш баланс:</h3>
+  			<h2 class="user-balance-number"><%= current_user.balance %> ♥</h2>
+  			<a href="#" class="help-balance-link">Что такое баланс</a>
+  			<a href="#" class="help-nonpay-balance-link">Как получить бесплатно</a>
+  			<button class="btn btn-block btn-primary btn-buy" onclick="alert('Функция в стадии разработки')">Купить</button>
+  	</div>
+  </div>
+  <div class="span8">
+  	<ul class="top-menu-cabinet">
+  		<li>
+  			<a href="#">
+  				<img src="/im/get_likes.png"><br />
+  				Получить лайки<br />бесплатно
+  			</a>
+  		</li>
+  		<li>
+  			<a href="/cabinet?act=get_likes">
+	  			<img src="/im/like.png"><br>
+	  			Накрутить<br />лайки
+  			</a>
+  		</li>
+  		<li>
+  			<a href="#">
+	  			<img src="/im/people2.png"><br>
+	  			Получить подписчиков<br />группы
+  			</a>
+  		</li>
+  	</ul>
