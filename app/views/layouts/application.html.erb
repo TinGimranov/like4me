@@ -85,7 +85,10 @@
 <body>
 
 <div class="container">
-
+<div class="alert alert-info" style="height: 21px;display: none" id="notice-message-field">
+  <div id="notice-message" style="float: left"></div>
+  <button id="close-notice-button" class="btn btn-primary btn-mini" style="float: right;">Закрыть уведомление</button>
+</div>
   <div class="masthead">
     <div class="loggin_vk">
       <% if current_user %>

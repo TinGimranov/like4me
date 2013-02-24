@@ -1,0 +1,9 @@
+ru:
+  activerecord:
+    models:
+      like_order: "Накрутка лайков"
+    attributes:
+      like_order:  
+        balance: "Сколько потратить"
+        url: URL
+        name: Название

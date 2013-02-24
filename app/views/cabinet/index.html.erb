@@ -1,0 +1,79 @@
+<%= render 'top' %>
+<p style="margin-top: 135px; margin-left: 63px;">
+	Для того что бы получить лайки на свой баланс <strong>бесплатно</strong>, просто поставьте лайк<br />в открывшемся окне, нажав на кнопку ниже
+</p>
+<button class="btn btn-block btn-primary btn-buy" style="width: 82%; margin-left: 60px" onclick="like_post()" id="like-button">Поставить лайк</button>
+<img src="/im/ajax-loader.gif" style="margin-left: 50%; display: none" id="ajax-loader">
+<%= render 'footer' %>
+
+<script type="text/javascript">
+
+
+function like_post()
+{
+	$("#like-button").hide();
+	$("#ajax-loader").show();
+	$.ajax({
+		url: '/cabinet/like_post',
+		type: 'post',
+		dataType: 'text',
+		success: function(response)
+		{
+			$("#like-button").show();
+			$("#ajax-loader").hide();
+			if(response == 0)
+				show_notice_messsage("К сожалению на данный момент нет заказов, зайдите позже.");
+			else {
+				var lotAction = window.open(response, 'lotAction', 'width=900, height=600, top=' + ((screen.height - 600) / 2) + ',left=' + ((screen.width - 900) / 2) + ', resizable=yes, scrollbars=no, status=yes');
+				var closetimer = setInterval(function() {
+					  if (lotAction.closed) {
+							clearInterval(closetimer);
+							closedLikePage(response);
+					  }
+				 }, 100);
+			}
+		}
+	});
+}
+
+function closedLikePage(url)
+{
+	$.ajax({
+		url: '/cabinet/check_like',
+		type: 'post',
+		dataType: 'text',
+		data: 'url='+url,
+		success: function(response) 
+		{
+			if(response == 1)
+				show_notice_messsage("Неожиданная ошибка сервера");
+			if(response == 2)
+				show_notice_messsage("Заказа с таким URL в базе не найдено");
+			if(response == 3)
+				show_notice_messsage("К сожаению вы не успели баланс этого заказа уже равен 0");
+			if(response == 4)
+				show_notice_messsage("Вы не лайкнули пост");
+			if(response == 0)
+			{
+				balance = $("#user-balance-number").text();
+				balance = parseInt(balance) + 1;
+				$("#user-balance-number").empty().append(balance+' ♥');
+				show_notice_messsage("Вы заработали +1 ♥. Он поступит в течении нескольких минут на ваш счёт");
+			}
+		}
+	});
+}	
+
+function show_notice_messsage(msg)
+{
+	$("#notice-message").empty().append(msg);
+	$("body").css('padding-top', '0');
+	$("#notice-message-field").show();
+}
+
+$("#close-notice-button").click(function(){
+	$("#notice-message-field").hide();
+	$("body").css('padding-top', '20px');
+})
+
+</script>

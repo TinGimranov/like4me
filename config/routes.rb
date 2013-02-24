@@ -77,6 +77,8 @@ Like4me::Application.routes.draw do
   match "/signout" => "site_sessions#destroy", :as => :signout
   match "/auth/failure" => 'main#index'
   match "cabinet" => 'cabinet#index'
+  post '/cabinet/like_post' => 'cabinet#like_post'
+  post '/cabinet/check_like' => 'cabinet#check_like'
   get ':slug' => 'main#textpage'
 
   # See how all your routes lay out with "rake routes"

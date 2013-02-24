@@ -40,6 +40,9 @@ ActiveRecord::Schema.define(:version => 20130223205316) do
   create_table "like_orders", :force => true do |t|
     t.string   "name"
     t.string   "url"
+    t.integer  "item_id"
+    t.integer  "owner_id"
+    t.string   "type"
     t.integer  "balance"
     t.integer  "sex"
     t.integer  "gender_min"

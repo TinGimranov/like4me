@@ -39,6 +39,8 @@ gem "omniauth"
 gem "omniauth-vkontakte"
 gem 'vkontakte_api', '~> 1.1'
 
+gem 'rest-client'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

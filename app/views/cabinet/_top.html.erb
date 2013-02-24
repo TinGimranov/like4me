@@ -61,7 +61,7 @@
   			<h4 class="name"><%= current_user.name%></h4>
   			<%= link_to "Выход", signout_path, :class => "logout-button" %>	
   			<h3 class="user-balance">Ваш баланс:</h3>
-  			<h2 class="user-balance-number"><%= current_user.balance %> ♥</h2>
+  			<h2 class="user-balance-number" id="user-balance-number"><%= current_user.balance %> ♥</h2>
   			<a href="#" class="help-balance-link">Что такое баланс</a>
   			<a href="#" class="help-nonpay-balance-link">Как получить бесплатно</a>
   			<button class="btn btn-block btn-primary btn-buy" onclick="alert('Функция в стадии разработки')">Купить</button>
@@ -70,7 +70,7 @@
   <div class="span8">
   	<ul class="top-menu-cabinet">
   		<li>
-  			<a href="#">
+  			<a href="/cabinet">
   				<img src="/im/get_likes.png"><br />
   				Получить лайки<br />бесплатно
   			</a>

@@ -3,6 +3,9 @@ class CreateLikeOrders < ActiveRecord::Migration
     create_table :like_orders do |t|
       t.string :name
       t.string :url
+      t.integer :item_id
+      t.integer :owner_id
+      t.string  :type_record
       t.integer :balance
       t.integer :sex
       t.integer :gender_min
