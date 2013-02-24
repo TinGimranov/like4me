@@ -4,6 +4,8 @@ class CreateSiteUsers < ActiveRecord::Migration
       t.string :provider
       t.string :uid
       t.string :name
+      t.integer :sex
+      t.date :birthday
       t.integer :balance
 
       t.timestamps

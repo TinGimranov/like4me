@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  url: MyString
+  balance: 1
+  sex: 1
+  gender_min: 1
+  gender_max: 1
+  user_id: 1
+
+two:
+  name: MyString
+  url: MyString
+  balance: 1
+  sex: 1
+  gender_min: 1
+  gender_max: 1
+  user_id: 1

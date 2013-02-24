@@ -18,13 +18,13 @@
   <div class="control-group">
     <label style="float: left">Сколько ♥ потратить</label>
     <div class="controls" style="margin-left: 180px">
-      <input type="text" placeholder="<%= current_user.balance %>" id="">
+      <input type="text" id="balance-current-status">
     </div>
   </div>
   <div class="control-group">
     <label style="float: left">Пол</label>
-    <div class="controls" style="margin-left: 180px" id="sex">
-      <select>
+    <div class="controls" style="margin-left: 180px" >
+      <select id="sex">
       		<option value='0'>Не важно</option>
       		<option value='1'>Только мужчины</option>
       		<option value='2'>Только женщины</option>
@@ -33,8 +33,8 @@
   </div>
     <div class="control-group">
     <label style="float: left">Возраст от</label>
-    <div class="controls" style="margin-left: 180px" id="gender_min">
-      <select>
+    <div class="controls" style="margin-left: 180px">
+      <select  id="gender_min">
       		<option value='0'>Не важно</option>
       		<option value='14'>14 лет</option>
       		<option value='16'>16 лет</option>
@@ -50,8 +50,8 @@
   </div>
   <div class="control-group">
     <label style="float: left">Возраст до</label>
-    <div class="controls" style="margin-left: 180px" id="gender_max">
-      <select>
+    <div class="controls" style="margin-left: 180px" >
+      <select id="gender_max">
       		<option value='0'>Не важно</option>
       		<option value='16'>16 лет</option>
       		<option value='18'>18 лет</option>
@@ -65,7 +65,7 @@
     </div>
   </div>
     <div class="control-group">
-    <label style="float: left">Сколько лайков добавится на вашу страницу в ВК:<h2 class="user-balance-number" style="float: none; margin: 0 0 0 0"><%= current_user.balance %> ♥</h2></label>
+    <label style="float: left">Сколько лайков добавится на вашу страницу в ВК:<h2 class="user-balance-number" style="float: none; margin: 0 0 0 0" id="balance-result-ststus">0 ♥</h2></label>
     <div class="controls" style="margin-left: 180px">
 
     </div>
@@ -91,15 +91,45 @@
 </div>
 
 <script type="text/javascript">
+var sex = 0;
+var gender = 0;
 $("select").change(function(){
 	if(modal_show == 0) {
 		$("#modal_content").empty().html("За дополнительные опции взимается 1 лайк за каждое сердечко на вашу страницу");
 		$("#myModal").modal("show");
 		modal_show = 1;
 	}
-	if("")
-	if($("#sex").val())
-})
-</script>
+	if(!$("#balance-current-status").val())
+    var balance = 0;
+  else
+    var balance = parseInt($("#balance-current-status").val());
 
+	if($("#sex").val() != 0 && $("#sex").val())
+    sex = 1;
+  else
+    sex = 0;
+
+  if(($("#gender_max").val() != 0 && $("#gender_max").val()) || ($("#gender_min").val() != 0 && $("#gender_min").val()))
+    gender = 1;
+  else
+    gender = 0;
+
+  var new_balance = balance;
+  if (sex == 1) { new_balance += balance };
+  if (gender == 1) { new_balance += balance };
+  
+  $("#balance-result-ststus").empty().html(new_balance+' ♥');
+});
+
+$("#balance-current-status").keyup(function(){
+   var balance = parseInt($("#balance-current-status").val());
+   var new_balance = balance;
+   if (sex == 1) { new_balance += balance};
+   if (gender == 1) { new_balance += balance};
+   $("#balance-result-ststus").empty().html(new_balance+' ♥');       
+});
+</script>
+<pre>
+<%= @likes.to_json %>
+</pre>
 <%= render 'footer' %>
