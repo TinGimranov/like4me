@@ -4,6 +4,14 @@
 </p>
 <button class="btn btn-block btn-primary btn-buy" style="width: 82%; margin-left: 60px" onclick="like_post()" id="like-button">Поставить лайк</button>
 <img src="/im/ajax-loader.gif" style="margin-left: 50%; display: none" id="ajax-loader">
+
+<p style="margin-top: 135px; margin-left: 63px;">
+	Вы можете получать больше лайков <strong>бесплатно</strong> вступая в группы.<br />
+	Нажмите на кнопку ниже и в открывшемся окне вступите в группу.<br />
+	Вступая в группы вы получаете <strong>минимально 2 лайка</strong> на свой баланс.
+</p>
+<button class="btn btn-block btn-primary btn-buy" style="width: 82%; margin-left: 60px" onclick="subscribe_group()" id="subscribe-group-button">Вступить в группу</button>
+<img src="/im/ajax-loader.gif" style="margin-left: 50%; display: none" id="ajax-loader-group">
 <%= render 'footer' %>
 
 <script type="text/javascript">
@@ -42,7 +50,7 @@ function closedLikePage(url)
 		url: '/cabinet/check_like',
 		type: 'post',
 		dataType: 'text',
-		data: 'url='+url,
+		data: {'url' : url},
 		success: function(response) 
 		{
 			if(response == 1)
@@ -59,6 +67,60 @@ function closedLikePage(url)
 				balance = parseInt(balance) + 1;
 				$("#user-balance-number").empty().append(balance+' ♥');
 				show_notice_messsage("Вы заработали +1 ♥. Он поступит в течении нескольких минут на ваш счёт");
+			}
+		}
+	});
+}
+
+function subscribe_group() {
+	$("#subscribe-group-button").hide();
+	$("#ajax-loader-group").show();
+	$.ajax({
+		url: '/cabinet/subscribe_group',
+		type: 'post',
+		dataType: 'text',
+		success: function(response)
+		{
+			$("#subscribe-group-button").show();
+			$("#ajax-loader-group").hide();
+			if(response == 0)
+				show_notice_messsage("К сожалению на данный момент нет заказов, зайдите позже.");
+			else {
+				var lotAction = window.open(response, 'lotAction', 'width=900, height=600, top=' + ((screen.height - 600) / 2) + ',left=' + ((screen.width - 900) / 2) + ', resizable=yes, scrollbars=no, status=yes');
+				var closetimer = setInterval(function() {
+					  if (lotAction.closed) {
+							clearInterval(closetimer);
+							closedSubscribePage(response);
+					  }
+				 }, 100);
+			}
+		}
+	});
+} 
+
+function closedSubscribePage(url)
+{
+	$.ajax({
+		url: '/cabinet/check_subscribe',
+		type: 'post',
+		dataType: 'json',
+		data: {'url' : url},
+		success: function(response) 
+		{
+			if(response.error_code == 1)
+				show_notice_messsage("Неожиданная ошибка сервера");
+			if(response.error_code == 2)
+				show_notice_messsage("Заказа с таким URL в базе не найдено");
+			if(response.error_code == 3)
+				show_notice_messsage("К сожаению вы не успели баланс этого заказа уже равен 0");
+			if(response.error_code == 4)
+				show_notice_messsage("Вы не вступили в группу");
+			if(response.error_code == 0)
+			{
+				balance = $("#user-balance-number").text();
+				balance = parseInt(balance) + parseInt(response.bonus);
+				$("#user-balance-number").empty().append(balance+' ♥');
+				show_notice_messsage("Вы заработали +"+response.bonus+" ♥. Лайки поступят в течении нескольких минут на ваш счёт");
 			}
 		}
 	});

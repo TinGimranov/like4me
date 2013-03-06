@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130223205316) do
+ActiveRecord::Schema.define(:version => 20130306175717) do
 
   create_table "ckeditor_assets", :force => true do |t|
     t.string   "data_file_name",                  :null => false
@@ -42,14 +42,14 @@ ActiveRecord::Schema.define(:version => 20130223205316) do
     t.string   "url"
     t.integer  "item_id"
     t.integer  "owner_id"
-    t.string   "type"
+    t.string   "type_record"
     t.integer  "balance"
     t.integer  "sex"
     t.integer  "gender_min"
     t.integer  "gender_max"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "posts", :force => true do |t|
@@ -83,6 +83,17 @@ ActiveRecord::Schema.define(:version => 20130223205316) do
     t.integer  "sex"
     t.date     "birthday"
     t.integer  "balance"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "subscribe_orders", :force => true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.integer  "gid"
+    t.integer  "balance"
+    t.integer  "bonus"
+    t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

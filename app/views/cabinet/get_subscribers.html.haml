@@ -1,0 +1,79 @@
+=render 'top'
+-if @notice_seccess.to_i == 1
+	:javascript
+		$(document).ready(function(){
+			$("form").hide();
+		})
+	%p.text-success{:style => "margin: 120px 0 17px 60px"}
+		Ваш заказ успешно добавлен. Подписчики начнут поступать в течении пары часов
+	%a{:href=>"/cabinet"}
+		%button.btn.btn-block.btn-primary.btn-buy{:style =>"width: 82%; margin-left: 60px"}
+			Вернуться на главную в кабинет</button></a>
+=form_for(@subscribe_orders, :method => 'post', :url => '', :html => { :class => 'form-horizontal', :style => "margin-top: 135px; margin-left: 63px;" }) do |f|
+	%div#error_explanation
+		-@subscribe_orders.errors.full_messages.each do |msg|
+			%p.text-error
+				=msg
+	%div.control-group
+		%label{:style => "float: left"} Название
+		%div.controls{:style => "margin-left: 180px"}
+			=f.text_field :name, :placeholder => "Моя новая группа"
+	%div.control-group
+		%label{:style => "float: left"} Ссылка на группу
+		%div.controls{:style => "margin-left: 180px"}
+			=f.text_field :url, :placeholder => "http://vk.com/..."
+			%br
+			%span{:style => "color: grey; font-size: 10px"}
+				http://vk.vom/public213213
+			%br
+			%span{:style => "color: grey; font-size: 10px"}
+				http://vk.vom/club123213
+			%br
+			%span{:style => "color: grey; font-size: 10px"}
+				http://vk.vom/groupname
+	%div.control-group
+		%label{:style => "float: left"} Цена подписчика  ♥
+		%div.controls{:style => "margin-left: 180px"}
+			=f.text_field :bonus, :placeholder => "2", :id => "bonus-status"
+	%div.control-group
+		%label{:style => "float: left"} Сколько подписчиков
+		%div.controls{:style => "margin-left: 180px"}
+			=f.text_field :balance, :placeholder => "50", :id => "balance-current-status"
+	%div.control-group
+		%label{:style=>"float: left"} 
+			Сколько лайков спишется с вашего баланса:
+			%h2.user-balance-number{:style => "float: none; margin: 0 0 0 0", :id => "balance-result-ststus"}
+				:javascript
+					if (!$("#balance-current-status").val())
+					{
+						balance = 0;
+					}
+					else {
+						var balance = parseInt($("#balance-current-status").val());
+						if($("#bonus-status").val())
+							balance = balance*parseInt($("#bonus-status").val());
+					}
+					document.write(balance+' ♥');
+			%div.controls
+	%div.control-group
+		%div.controls
+			=f.submit 'Заказать', :class => 'btn btn-block', :style => 'width: 60%'		
+:javascript
+	$("#balance-current-status").bind('keyup focusout',function(){
+	   var balance = parseInt($("#balance-current-status").val());
+	   var new_balance = balance;
+	   if($("#bonus-status").val())
+		new_balance = parseInt(balance)*parseInt($("#bonus-status").val());
+	   $("#balance-result-ststus").empty().html(new_balance+' ♥');       
+	});
+	
+	$("#bonus-status").bind('keyup focusout',function(){
+	   var balance = parseInt($("#balance-current-status").val());
+	   var new_balance = balance;
+	   if(balance)
+		new_balance = parseInt(balance)*parseInt($("#bonus-status").val());
+	   else
+	    new_balance = 0;
+	   $("#balance-result-ststus").empty().html(new_balance+' ♥');       
+	});
+=render 'footer'

@@ -1,0 +1,10 @@
+ru:
+  activerecord:
+    models:
+       subscribe_orders: "Подписчики групп"
+    attributes:
+      subscribe_orders:  
+        balance: "Сколько подписчиков"
+        url: URL
+        name: Название
+        bonus: "Цена подписчика"

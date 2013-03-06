@@ -1,5 +1,5 @@
 <h1><%= @post.title %></h1>
 <p class="muted"><%= Russian::strftime(@post.updated_at, "%d %B %Y г. %H:%M") %></p>
-<%= @post.content %>
+<%= @post.content.html_safe %>
 <br><br>
 <a href="/blog"><< Вернуться к списку</a>

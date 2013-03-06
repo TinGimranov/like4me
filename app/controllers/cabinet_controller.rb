@@ -3,7 +3,8 @@ require 'rest-client'
 
 class CabinetController < ApplicationController
 
-	include AdminHelper  
+	include AdminHelper 
+	include VkHelper 
 
 	def index
 		if !current_user
@@ -70,6 +71,51 @@ class CabinetController < ApplicationController
 			end
 			render :get_likes
 		end
+		if params[:act] == "get_subscribers"
+		  @subscribe_orders = SubscribeOrders.new(params[:subscribe_orders])
+		  if request.post?
+		    if @subscribe_orders.valid?
+		      if params[:subscribe_orders][:url].scan(/^http:\/\/vk.com\/club[0-9]+$/i).size > 0 || params[:subscribe_orders][:url].scan(/^http:\/\/vk.com\/public[0-9]+$/i).size > 0
+		        gid = params[:subscribe_orders][:url].scan(/[0-9]+$/i)
+		      elsif params[:subscribe_orders][:url].scan(/^http:\/\/vk.com\/[0-9A-Za-z.-_]+$/i).size > 0
+		        gid = params[:subscribe_orders][:url].split("/")[3]        
+	        else
+	          @subscribe_orders.errors.add(:url, "не удаётся прочитать информацию о группе")
+	          render :get_subscribers
+	          return
+	        end
+          RestClient.get(params[:subscribe_orders][:url]) { |response, request, result, &block|
+					  case response.code
+					  when 404
+					      @subscribe_orders.errors.add(:url, "который вы ввели недоступен")
+					  else
+					    vk = VkontakteApi::Client.new(get_settings_value('access_token'))
+          	  group_info = vk.groups.getById(gid: gid)
+
+    	        if group_info[0].is_closed.to_i != 0
+    	          @subscribe_orders.errors.add(:url, "группа закрыта настройками приватности")
+    	          render :get_subscribers
+    	          return
+    	        else
+                if params[:subscribe_orders][:balance].to_i*params[:subscribe_orders][:bonus].to_i > current_user.balance.to_i
+					  			@subscribe_orders.errors.add(:balance, "умноженное на цену подписчика не может быть запрошено больше чем лайков на вашем балансе")
+					  			render :get_subscribers
+					  			return	
+					  		end
+					  		@subscribe_orders.gid = group_info[0].gid
+					  		@subscribe_orders.user_id = current_user.id
+					  		if @subscribe_orders.save
+				  				@site_user = SiteUser.find(:first, :conditions => {:id => current_user.id })
+				  				@site_user.update_attributes(:balance => current_user.balance.to_i - (params[:subscribe_orders][:balance].to_i*params[:subscribe_orders][:bonus].to_i))
+				  			end
+				  			@notice_seccess = 1
+    	        end
+					  end
+				  }
+		    end
+		  end
+		  render :get_subscribers
+		end
 	end
 
 	def like_post
@@ -123,6 +169,55 @@ class CabinetController < ApplicationController
 
 		else
 			render :text => 1 #Пришёл пустой параметр
+			return
+		end
+	end
+	
+	def subscribe_group
+		orders = SubscribeOrders.find(:all, 
+				:conditions => ["balance > ? AND user_id <> ?", 0, current_user.id],
+				:order => "RAND()"
+		)
+		orders.each do |item|
+				vk = VkontakteApi::Client.new(get_settings_value('access_token'))
+				is_member = vk.groups.isMember(gid: item.gid, user_id: current_user.uid)
+				if is_member.to_i == 0
+					render :text => item.url
+					return
+				end
+		end
+		render :text => 0
+		return
+	end
+	
+	def check_subscribe
+		if params[:url]
+			item = SubscribeOrders.find(:first, :conditions => { :url => params[:url] })
+			if item && item != nil
+				if item.balance.to_i != 0
+					vk = VkontakteApi::Client.new(get_settings_value('access_token'))
+					is_member = vk.groups.isMember(gid: item.gid, user_id: current_user.uid)
+					if is_member.to_i == 1
+						item.update_attributes(:balance => item.balance.to_i - 1)
+						site_user = SiteUser.find(:first, :conditions => {:id => current_user.id })
+						site_user.update_attributes(:balance => current_user.balance.to_i + item.bonus.to_i)
+						render :json => {error_code: 0, bonus: item.bonus}
+						return
+					else
+						render :json => {error_code: 4} #Вы не лайкнули пост
+						return
+					end
+				else
+					render :json => {error_code: 3} #Баланс уже равен нулю
+					return;	
+				end
+			else
+				render :json => {error_code: 2} #Заказа не найдено
+				return	
+			end
+
+		else
+			render :json => {error_code: 1} #Пришёл пустой параметр
 			return
 		end
 	end
