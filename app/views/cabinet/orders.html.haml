@@ -1,0 +1,132 @@
+=render 'top'
+%div.order-items{:style => "margin-top: 135px; margin-left: 63px;"}
+	%h4 Накрутка лайков
+	%table{:style => "width: 100%"}
+		-@like_orders.each do |item|
+			%tr
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+			%tr
+				%td
+					=link_to image_tag('/im/delete.png'), {:controller => "cabinet", :action => "orders", :param_name => item.id, :param_type => 'like'} , :method => :delete, :confirm => 'Вы уверены в удалении?'
+				%td	
+					=link_to item.name, item.url, :target => '_blank'
+				%td 
+					Осталось: 
+					%span{:style=>"color: red; font-weight: bold"} 
+						=item.balance 
+						♥
+					%br
+					=link_to "Пополнить", '#', :style => "font-size: 11px", :onclick => "update_balance('like', '"+item.id.to_s+"')"
+				%td 
+					%strong
+						Дополнительные параметры
+					%br
+					Пол: 
+					-if item.sex.to_int == 0
+						%strong Не указан
+					-elsif item.sex.to_int == 1
+						%strong Женский
+					-else
+						Мужской
+					%br
+					Возраст от 
+					-if item.gender_min.to_int == 0
+						%strong {не указан}
+					-else
+						%strong= item.gender_min
+					до
+					-if item.gender_max.to_int == 0
+						%strong {не указан}
+					-else
+						%strong= item.gender_max
+			%tr{:style => "border-bottom: 1px solid rgba(0,0,0,.1);height: 10px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+	%h4 Подписчики в группы 
+	%table{:style => "width: 100%"}
+		-@subscribers.each do |item|
+			%tr
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+			%tr
+				%td
+					=link_to image_tag('/im/delete.png'), {:controller => "cabinet", :action => "orders", :param_name => item.id, :param_type => 'subscribe'} , :method => :delete, :confirm => 'Вы уверены в удалении?'
+				%td	
+					=link_to item.name, item.url, :target => '_blank'
+				%td 
+					Осталось: 
+					%span{:style=>"color: red; font-weight: bold"} 
+						=item.balance 
+						♥
+					%br
+					=link_to "Пополнить", '#', :style => "font-size: 11px", :onclick => "update_balance('subscribe', '"+item.id.to_s+"')"
+				%td 
+					%strong
+						Дополнительные параметры
+					%br
+					Бонус:
+					=item.bonus
+					♥
+			%tr{:style => "border-bottom: 1px solid rgba(0,0,0,.1);height: 10px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+				%td{:style=>"height: 20px"}
+	%p.text-success{:style => "margin-top: 40px"} В случае удаления заказа все неиспользованные лайки вернутся к вам на баланс
+	
+
+%div.modal.hide.fade#myModal{ :tabindex => "-1", :role => "dialog", :ariaLabelledby => "myModalLabel", :ariaHidden => "true" }
+	%div.modal-header
+		%button.close{:type => "button", :dataDismiss => "modal", :ariaHidden => "true", :onclick => "$('#myModal').modal('hide');$('#new_order_balance').val('');" }×
+		%h3 Обновление баланса заказа
+	%div.modal-body
+		Введите количество лайков для пополнения:
+		%br
+		%br
+		%p.text-error#order-balance-error
+		%br
+		%input#new_order_balance{:type => 'text'} 
+	%div.modal-footer
+		%a.btn{ :href=> "#", :onclick => "$('#myModal').modal('hide');$('#new_order_balance').val('');"} Закрыть
+		%a.btn.btn-primary#update_balance{ :href => "#" } Сохранить изменения
+:javascript
+	var type;
+	var id;
+	function update_balance(type_cur, id_cur)
+	{
+		$("#myModal").modal("show");
+		type = type_cur;
+		id = id_cur;
+	}
+	
+	$("#update_balance").bind('click', function(){
+		$.ajax({
+			url: '/cabinet/update_balance',
+			type: 'post',
+			dataType: 'json',
+			data: {"type": type, "id": id, "balance": $("#new_order_balance").val()},
+			success: function(data)
+			{
+				if(data['error'] == 5)
+					$("#order-balance-error").empty().append('Произошла системная ошибка');
+				if(data['error'] == 4)
+					$("#order-balance-error").empty().append('Поле с новым балансом необходимо заполнить');
+				if(data['error'] == 3)
+					$("#order-balance-error").empty().append('Поле с новым балансов должно быть числом');
+				if(data['error'] == 2)
+					$("#order-balance-error").empty().append('Заказ не найден');
+				if(data['error'] == 1)
+					$("#order-balance-error").empty().append('Новый баланс не должен превышать баланс вашего аккаунта');
+				if(data['error'] == 0)
+					window.location.href = '/cabinet/orders';
+			}
+		})
+	})
+=render 'footer'

@@ -8,7 +8,7 @@
           $("form").hide();
       })
     </script>
-    <p class="text-success" style="margin: 120px 0 17px 60px">Ваш заказ успешно добавлен. Лайки начнут поступать в течении пары часов</p>
+    <p class="text-success" style="margin: 20px 0 17px 60px; float: left">Ваш заказ успешно добавлен. Лайки начнут поступать в течении пары часов</p>
     <a href="/cabinet"><button class="btn btn-block btn-primary btn-buy" style="width: 82%; margin-left: 60px">Вернуться на главную в кабинет</button></a>
   <% end %>
 <%= form_for(@like_order, :method => 'post', :url => '', :html => { :class => "form-horizontal", :style=>"margin-top: 135px; margin-left: 63px;" }) do |f| %>

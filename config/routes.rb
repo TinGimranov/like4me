@@ -81,6 +81,9 @@ Like4me::Application.routes.draw do
   post '/cabinet/check_like' => 'cabinet#check_like'
   post '/cabinet/subscribe_group' => 'cabinet#subscribe_group'
   post '/cabinet/check_subscribe' => 'cabinet#check_subscribe'
+  get '/cabinet/orders'           => 'cabinet#orders'
+  delete '/cabinet/orders'  => 'cabinet#orders'
+  post '/cabinet/update_balance' => 'cabinet#update_balance'
   get ':slug' => 'main#textpage'
 
   # See how all your routes lay out with "rake routes"

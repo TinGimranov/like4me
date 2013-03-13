@@ -3,8 +3,7 @@ require 'rest-client'
 
 class CabinetController < ApplicationController
 
-	include AdminHelper 
-	include VkHelper 
+	include AdminHelper  
 
 	def index
 		if !current_user
@@ -221,4 +220,102 @@ class CabinetController < ApplicationController
 			return
 		end
 	end
+	
+	def orders
+	  if !current_user
+ 			redirect_to '/'
+ 		end
+ 		if request.delete?
+ 		  like = LikeOrder.find(:first, :conditions => { :id => params[:param_name] })
+ 		  if like && like.user_id == current_user.id && params[:param_type] == 'like'
+ 		      current_balance = like.balance
+ 		      balance_to_restore = like.balance
+ 		      if like.sex.to_i != 0
+ 		        balance_to_restore = balance_to_restore.to_i + current_balance.to_i
+ 		      end
+ 		      if like.gender_min.to_i != 0 || like.gender_max.to_i != 0
+ 		         balance_to_restore = balance_to_restore.to_i + current_balance.to_i
+ 		      end
+ 		      site_user = SiteUser.find(:first, :conditions => {:id => current_user.id })
+					site_user.update_attributes(:balance => current_user.balance.to_i + balance_to_restore.to_i)
+ 		      like.delete
+          redirect_to '/cabinet/orders'
+ 		  end
+ 		  subscribe = SubscribeOrders.find(:first, :conditions => { :id => params[:param_name] })
+ 		  if subscribe && subscribe.user_id == current_user.id && params[:param_type] == 'subscribe'
+ 		      restore_balance_value = subscribe.balance.to_i*subscribe.bonus.to_i
+ 		      site_user = SiteUser.find(:first, :conditions => {:id => current_user.id })
+					site_user.update_attributes(:balance => current_user.balance.to_i + restore_balance_value.to_i)
+ 		      subscribe.delete
+ 		      redirect_to '/cabinet/orders'
+ 		  end
+ 		end
+ 		@meta_title = "История заказов - Личный кабинет"
+ 		@like_orders = LikeOrder.find(:all, :conditions => {:user_id => current_user.id })
+ 		@subscribers = SubscribeOrders.find(:all, :conditions => {:user_id => current_user.id })
+	end
+
+	def update_balance
+	  if params[:type] != 'like' && params[:type] != 'subscribe'
+    	    render :json => '{ "error":"5" }'
+    	    return
+	  end
+    if params[:id] == '' || params[:id].to_i.to_s != params[:id]
+        render :json => '{ "error":"5" }'
+  	    return
+    end
+    
+    if params[:balance] == '' 
+        render :json => '{ "error":"4" }'
+  	    return
+    end
+    
+    if params[:balance].to_i.to_s != params[:balance]
+        render :json => '{ "error":"3" }'
+  	    return
+    end
+   
+   if params['type'] == 'like'
+        order = LikeOrder.find(:first, :conditions => { :id => params[:id].to_i })
+        if !order
+          render :json => '{ "error":"2" }'
+    	    return 
+    	  end
+    	  new_balance = params[:balance].to_i
+    	  if order.sex.to_i != 0
+    	    new_balance = new_balance.to_i + params[:balance].to_i
+    	  end 
+    	  if order.gender_min.to_i != 0 || order.gender_max.to_i != 0
+    	    new_balance = new_balance.to_i + params[:balance].to_i
+    	  end
+    	  if new_balance.to_i > current_user.balance.to_i
+    	    render :json => '{ "error":"1" }'
+      	  return
+    	  end
+    	  order.update_attributes(:balance => order.balance.to_i + params[:balance].to_i)
+    	  site_user = SiteUser.find(:first, :conditions => {:id => current_user.id })
+				site_user.update_attributes(:balance => current_user.balance.to_i - new_balance.to_i)
+				render :json => '{ "error":"0" }'
+     	  return
+   end 
+   
+   if params[:type] == 'subscribe'
+       order = SubscribeOrders.find(:first, :conditions => { :id => params[:id].to_i })
+       if !order
+         render :json => '{ "error":"2" }'
+   	     return 
+   	  end
+   	  new_balance = params[:balance].to_i * order.bonus.to_i
+   	  if new_balance.to_i > current_user.balance.to_i
+   	    render :json => '{ "error":"1" }'
+     	  return
+   	  end
+   	  order.update_attributes(:balance => order.balance.to_i + params[:balance].to_i)
+   	  site_user = SiteUser.find(:first, :conditions => {:id => current_user.id })
+  		site_user.update_attributes(:balance => current_user.balance.to_i - new_balance.to_i)
+  		render :json => '{ "error":"0" }'
+   	  return
+   end
+    
+  end
 end
