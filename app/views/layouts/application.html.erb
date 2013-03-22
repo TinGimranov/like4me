@@ -90,7 +90,7 @@
   <button id="close-notice-button" class="btn btn-primary btn-mini" style="float: right;">Закрыть уведомление</button>
 </div>
   <div class="masthead">
-    <div class="loggin_vk">
+    <div class="loggin_vk" style="margin-top: 72px;">
       <% if current_user %>
         <span>Здравствуйте, </span><%= link_to current_user.name, '/cabinet' %> | <%= link_to "Выход", signout_path %>
       <% else %>
@@ -98,7 +98,7 @@
         <a href="/auth/vkontakte" target=_blank><img src="/im/vkontakte.png"></a>
       <% end %>
     </div>
-    <a href="/" style="text-decoration: none"><img src="/im/logo.png"></a>
+    <a href="/" style="text-decoration: none"><img src="/im/logo.png" width="220"></a>
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
